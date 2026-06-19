@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<h2>Today — {{ today }}</h2>
+
+<h4 class="mt-4">Habits</h4>
+{% if habits %}
+<ul class="list-group mb-4 col-md-6">
+    {% for habit in habits %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ habit.name }}
+        <form action="/habits/{{ habit.id }}/toggle" method="post" class="m-0">
+            {% if habit.id in done_today %}
+            <button class="btn btn-success btn-sm" type="submit">✓ Done</button>
+            {% else %}
+            <button class="btn btn-outline-secondary btn-sm" type="submit">Mark done</button>
+            {% endif %}
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No habits yet. <a href="/habits">Add one</a>.</p>
+{% endif %}
+
+<h4 class="mt-4">Recent Entries</h4>
+{% if recent_entries %}
+<ul class="list-group mb-3 col-md-6">
+    {% for entry in recent_entries %}
+    <li class="list-group-item">
+        <strong>{{ entry.entry_date }}</strong> — {{ moods[entry.mood] }}<br>
+        {{ entry.content[:140] }}{% if entry.content|length > 140 %}...{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No entries yet.</p>
+{% endif %}
+
+<a class="btn btn-primary" href="/journal/new">New Entry</a>
+{% endblock %}

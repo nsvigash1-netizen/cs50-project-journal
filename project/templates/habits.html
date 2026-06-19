@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<h2>Habits</h2>
+
+<form action="/habits" method="post" class="d-flex gap-2 mb-4 col-md-6">
+    <input class="form-control" name="name" placeholder="New habit, e.g. Exercise" type="text">
+    <button class="btn btn-primary" type="submit">Add</button>
+</form>
+
+{% if habits %}
+<ul class="list-group col-md-6">
+    {% for habit in habits %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ habit.name }}
+        <form action="/habits/{{ habit.id }}/delete" method="post" class="m-0">
+            <button class="btn btn-sm btn-outline-danger" type="submit" onclick="return confirm('Remove this habit and all its history?')">Remove</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No habits yet — add one above.</p>
+{% endif %}
+{% endblock %}

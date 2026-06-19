@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Journal</h2>
+    <a class="btn btn-primary" href="/journal/new">New Entry</a>
+</div>
+
+<form action="/journal" method="get" class="mb-3 d-flex gap-2">
+    <select class="form-select w-auto" name="mood" onchange="this.form.submit()">
+        <option value="">All moods</option>
+        {% for value, label in moods.items() %}
+        <option value="{{ value }}" {% if mood_filter==value|string %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if entries %}
+{% for entry in entries %}
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <h5 class="card-title">{{ entry.entry_date }} — {{ moods[entry.mood] }}</h5>
+            <div>
+                <a class="btn btn-sm btn-outline-secondary" href="/journal/{{ entry.id }}/edit">Edit</a>
+                <form action="/journal/{{ entry.id }}/delete" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-outline-danger" type="submit" onclick="return confirm('Delete this entry?')">Delete</button>
+                </form>
+            </div>
+        </div>
+        <p class="card-text">{{ entry.content }}</p>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p>No entries found.</p>
+{% endif %}
+{% endblock %}

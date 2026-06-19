@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<h2>Stats</h2>
+
+<h4 class="mt-4">Mood breakdown ({{ total_entries }} entries total)</h4>
+<table class="table col-md-6">
+    <tbody>
+        {% for value, label in moods.items() %}
+        <tr>
+            <td>{{ label }}</td>
+            <td>{{ mood_summary.get(value, 0) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h4 class="mt-4">Habits — last 30 days</h4>
+{% if habit_stats %}
+<table class="table col-md-6">
+    <thead><tr><th>Habit</th><th>Days completed</th><th>Rate</th></tr></thead>
+    <tbody>
+        {% for h in habit_stats %}
+        <tr>
+            <td>{{ h.name }}</td>
+            <td>{{ h.completed }} / 30</td>
+            <td>{{ h.rate }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No habits to show yet.</p>
+{% endif %}
+{% endblock %}
